@@ -56,9 +56,9 @@ export default function ValueDeliveryRoadmap({ onOpenModal }: { onOpenModal?: ()
         </div>
 
         {/* Desktop Horizontal Timeline (Hidden on Mobile) */}
-        <div className="hidden lg:block w-full overflow-x-auto hide-scrollbar pb-8 snap-x snap-mandatory cursor-grab active:cursor-grabbing">
+        <div className="hidden lg:block w-full overflow-x-auto overflow-y-hidden hide-scrollbar pb-8 snap-x snap-mandatory cursor-grab active:cursor-grabbing">
           
-          <div className="relative min-w-[1200px] lg:min-w-full h-[500px] mx-auto px-12">
+          <div className="relative min-w-[1200px] lg:min-w-full h-[550px] mx-auto px-12">
             
             {/* The Central Track */}
             <div className="absolute left-0 right-0 top-1/2 h-1.5 bg-slate-200 -translate-y-1/2 rounded-full z-0"></div>

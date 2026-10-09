@@ -207,7 +207,7 @@ export default function Home() {
                     </div>
                     
                     <button type="submit" disabled={isLoading} className="w-full py-4 mt-2 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-semibold text-base xl:text-lg shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center gap-2">
-                      <span>{isLoading ? 'Registering...' : 'Register for Free'}</span>
+                      <span>{isLoading ? 'Registering...' : <><span className="line-through text-white/70 mr-1">₹799</span> Free</>}</span>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                       </svg>
@@ -243,12 +243,12 @@ export default function Home() {
               
               {/* Claude */}
               <div className="flex items-center">
-                <img src="/resources/claude-ai-brandmark.jpg" className="h-8 md:h-10 object-contain mix-blend-multiply contrast-125 brightness-110" alt="Claude" />
+                <img src="/resources/claude_transparent.png" className="h-8 md:h-10 object-contain" alt="Claude" />
               </div>
               
               {/* Gemini */}
               <div className="flex items-center">
-                <img src="/resources/gemini_logo.png" className="h-12 md:h-14 object-contain mix-blend-multiply contrast-125 brightness-110" alt="Gemini" />
+                <img src="/resources/gemini_transparent.png" className="h-12 md:h-14 object-contain" alt="Gemini" />
               </div>
               
               {/* Copilot */}
@@ -302,7 +302,7 @@ export default function Home() {
                 >
                   <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
                   <span className="relative flex items-center gap-2">
-                    Register for Free
+                    Register for <span className="line-through text-white/70 mx-1">₹799</span> Free
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                     </svg>
@@ -913,14 +913,9 @@ export default function Home() {
         </section>
 
         {/* ========================================================================= */}
-        {/* SECTION 6: WHAT YOU WILL TAKE AWAY                                       */}
+        {/* SECTION 6: WHAT THIS WORKSHOP IS NOT (ANTI-HYPE CALLOUT)                  */}
         {/* ========================================================================= */}
-        <ValueDeliveryRoadmap onOpenModal={() => setIsModalOpen(true)} />
-
-        {/* ========================================================================= */}
-        {/* SECTION 7: WHAT THIS WORKSHOP IS NOT (ANTI-HYPE CALLOUT)                  */}
-        {/* ========================================================================= */}
-        <section className="-mt-4 lg:-mt-8">
+        <section>
           <div className="p-8 sm:p-10 xl:p-14 rounded-2xl bg-white border-2 border-slate-300 shadow-subtle flex flex-col gap-8 xl:gap-12">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 xl:gap-10">
               <div className="space-y-2 xl:space-y-4 max-w-xl xl:max-w-3xl">
@@ -950,7 +945,7 @@ export default function Home() {
               >
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
                 <span className="relative flex items-center gap-2">
-                  Register for Free
+                  Register for <span className="line-through text-white/70 mx-1">₹799</span> Free
                   <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                   </svg>
@@ -959,6 +954,11 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ========================================================================= */}
+        {/* SECTION 7: WHAT YOU WILL TAKE AWAY                                       */}
+        {/* ========================================================================= */}
+        <ValueDeliveryRoadmap onOpenModal={() => setIsModalOpen(true)} />
 
         {/* ========================================================================= */}
         {/* SECTION 8: FINAL HEROIC CONVERSION CARD (NO FOOTER BELOW)                */}
@@ -1023,7 +1023,7 @@ export default function Home() {
                     </div>
                     
                     <button type="submit" disabled={isLoading} className="w-full py-4 mt-2 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-semibold text-base xl:text-lg shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center gap-2">
-                      <span>{isLoading ? 'Registering...' : 'Register for Free'}</span>
+                      <span>{isLoading ? 'Registering...' : <><span className="line-through text-white/70 mr-1">₹799</span> Free</>}</span>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                       </svg>
@@ -1054,7 +1054,7 @@ export default function Home() {
             <p className="text-[10px] text-[#FF5C00] font-bold uppercase">Free Entry</p>
           </div>
           <button onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} className="flex-none px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] text-white font-bold text-sm sm:text-base shadow-[0_4px_14px_rgba(255,92,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,92,0,0.4)] hover:-translate-y-0.5 transition-all text-center flex items-center gap-2">
-            <span>Register for Free</span>
+            <span>Register for <span className="line-through text-white/70 mx-1">₹799</span> Free</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
@@ -1092,7 +1092,7 @@ export default function Home() {
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div className="text-center mb-6">
-              <h2 className="font-display text-2xl font-bold text-slate-900">Register for Free</h2>
+              <h2 className="font-display text-2xl font-bold text-slate-900">Register for <span className="line-through text-slate-400 mx-1">₹799</span> Free</h2>
               <p className="text-slate-600 text-sm mt-2">Secure your spot for the AI & The Future Workshop</p>
             </div>
             
@@ -1130,7 +1130,7 @@ export default function Home() {
               </div>
               
               <button type="submit" disabled={isLoading} className="w-full py-3.5 mt-4 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-semibold text-base shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center gap-2">
-                <span>{isLoading ? 'Registering...' : 'Register for Free'}</span>
+                <span>{isLoading ? 'Registering...' : <><span className="line-through text-white/70 mr-1">₹799</span> Free</>}</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                 </svg>
