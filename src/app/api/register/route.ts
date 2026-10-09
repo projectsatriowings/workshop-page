@@ -82,31 +82,35 @@ export async function POST(request: Request) {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+      
+      // 4. Send Notification Email to Admin
+      const adminMailOptions = {
+        from: '"Workshop System" <contact@digitalghuru.in>',
+        to: 'contact@digitalghuru.in', // The admin email address
+        subject: `New Registration! Seat #${seatNumber} booked by ${fullName}`,
+        text: `New Registration Details:\n\nName: ${fullName}\nEmail: ${email}\nMobile: ${mobile}\nProfession: ${profession}\nSeat Number: ${seatNumber}`,
+        html: `
+          <div style="font-family: sans-serif; max-w: 600px; padding: 20px;">
+            <h2 style="color: #16a34a;">New Registration! 🎉</h2>
+            <p>A new user has just registered for the workshop.</p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+              <tr><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Field</th><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Value</th></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Seat #</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${seatNumber}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${fullName}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Mobile</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${mobile}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Profession</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${profession}</td></tr>
+            </table>
+          </div>
+        `,
+      };
 
-    // 4. Send Notification Email to Admin
-    const adminMailOptions = {
-      from: '"Workshop System" <contact@digitalghuru.in>',
-      to: 'contact@digitalghuru.in', // The admin email address
-      subject: `New Registration! Seat #${seatNumber} booked by ${fullName}`,
-      text: `New Registration Details:\n\nName: ${fullName}\nEmail: ${email}\nMobile: ${mobile}\nProfession: ${profession}\nSeat Number: ${seatNumber}`,
-      html: `
-        <div style="font-family: sans-serif; max-w: 600px; padding: 20px;">
-          <h2 style="color: #16a34a;">New Registration! 🎉</h2>
-          <p>A new user has just registered for the workshop.</p>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <tr><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Field</th><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Value</th></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Seat #</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${seatNumber}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${fullName}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Mobile</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${mobile}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Profession</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${profession}</td></tr>
-          </table>
-        </div>
-      `,
-    };
-
-    await transporter.sendMail(adminMailOptions);
+      await transporter.sendMail(adminMailOptions);
+    } catch (emailError) {
+      console.error("Email sending failed. Proceeding with registration anyway:", emailError);
+    }
 
     return NextResponse.json({ 
       success: true, 
