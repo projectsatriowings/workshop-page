@@ -12,39 +12,43 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
     }
 
-    // 1. Manage Seat Number & Storage
-    const dataDir = path.join(process.cwd(), 'data');
-    const bookingsFile = path.join(dataDir, 'bookings.json');
-    
-    // Ensure data directory exists
-    try {
-      await fs.access(dataDir);
-    } catch {
-      await fs.mkdir(dataDir, { recursive: true });
-    }
-
     let bookings = [];
-    let seatNumber = 1;
+    let seatNumber = Math.floor(Math.random() * 1000) + 100; // Fallback random seat number
 
     try {
-      const fileData = await fs.readFile(bookingsFile, 'utf8');
-      bookings = JSON.parse(fileData);
-      seatNumber = bookings.length + 1;
-    } catch (e) {
-      // File doesn't exist or is empty, start at 1
+      // 1. Manage Seat Number & Storage
+      const dataDir = path.join(process.cwd(), 'data');
+      const bookingsFile = path.join(dataDir, 'bookings.json');
+      
+      // Ensure data directory exists
+      try {
+        await fs.access(dataDir);
+      } catch {
+        await fs.mkdir(dataDir, { recursive: true });
+      }
+
+      try {
+        const fileData = await fs.readFile(bookingsFile, 'utf8');
+        bookings = JSON.parse(fileData);
+        seatNumber = bookings.length + 1;
+      } catch (e) {
+        seatNumber = 1; // First booking if file is empty
+      }
+
+      const newBooking = {
+        seatNumber,
+        fullName,
+        email,
+        mobile,
+        profession,
+        timestamp: new Date().toISOString()
+      };
+
+      bookings.push(newBooking);
+      await fs.writeFile(bookingsFile, JSON.stringify(bookings, null, 2));
+    } catch (fsError) {
+      console.warn("Could not save to local filesystem (likely a serverless read-only environment). Continuing with email only.");
     }
-
-    const newBooking = {
-      seatNumber,
-      fullName,
-      email,
-      mobile,
-      profession,
-      timestamp: new Date().toISOString()
-    };
-
-    bookings.push(newBooking);
-    await fs.writeFile(bookingsFile, JSON.stringify(bookings, null, 2));
 
     // 2. Setup Nodemailer
     const transporter = nodemailer.createTransport({

@@ -10,6 +10,14 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState<{show: boolean, title: string, message: string, type: 'success' | 'error' | ''}>({show: false, title: '', message: '', type: ''});
 
+  // Auto-open modal after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsModalOpen(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const showToast = (title: string, message: string, type: 'success' | 'error') => {
     setToast({ show: true, title, message, type });
     setTimeout(() => setToast(prev => ({ ...prev, show: false })), 6000);
@@ -1092,8 +1100,9 @@ export default function Home() {
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div className="text-center mb-6">
-              <h2 className="font-display text-2xl font-bold text-slate-900">Register for <span className="line-through text-slate-400 mx-1">₹799</span> Free</h2>
-              <p className="text-slate-600 text-sm mt-2">Secure your spot for the AI & The Future Workshop</p>
+              <div className="inline-block px-3 py-1 mb-3 rounded-full bg-orange-100 text-[#FF5C00] text-xs font-bold tracking-wider uppercase animate-pulse">Wait! Don't Miss Out</div>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Transform Your Skills & Dominate with AI</h2>
+              <p className="text-slate-600 text-sm mt-3">Grab your spot now for <span className="line-through text-slate-400 mx-1">₹799</span> <span className="font-bold text-[#FF5C00]">FREE</span> before seats run out!</p>
             </div>
             
             <form className="space-y-4" onSubmit={(e) => { handleRegister(e); setIsModalOpen(false); }}>
