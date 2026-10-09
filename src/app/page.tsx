@@ -10,11 +10,11 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState<{show: boolean, title: string, message: string, type: 'success' | 'error' | ''}>({show: false, title: '', message: '', type: ''});
 
-  // Auto-open modal after 5 seconds
+  // Auto-open modal after 2 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -81,14 +81,41 @@ export default function Home() {
         <div className="absolute inset-0 grid-bg-pattern opacity-40"></div>
       </div>
 
-      {/* Single Page Full Canvas Experience (NO NAV BAR, NO FOOTER) */}
-      <main className="w-full relative z-10 pt-6 pb-20 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 max-w-[1920px] mx-auto space-y-12 lg:space-y-20">
+      {/* Logo & Marquee Banner (Edge-to-Edge) */}
+      <div className="w-full bg-[#006FFF] flex items-stretch overflow-hidden shadow-[0_8px_30px_rgba(0,111,255,0.25)] relative z-20">
+        {/* Logo Area */}
+        <div className="bg-white/10 px-4 sm:px-8 py-2.5 sm:py-3 flex items-center justify-center flex-shrink-0 z-10 relative backdrop-blur-sm border-r border-white/20">
+          <img src="/resources/logo-final%20dG.webp" alt="Digital Ghuru Logo" className="h-10 sm:h-12 lg:h-16 w-auto object-contain brightness-110 drop-shadow-md" />
+        </div>
         
-        <div>
-          {/* Logo Placement */}
-          <div className="w-full flex items-center justify-start pb-4 sm:pb-6">
-            <img src="/resources/logo-final%20dG.webp" alt="Digital Ghuru Logo" className="h-10 sm:h-12 lg:h-14 w-auto object-contain" />
+        {/* Scrolling Text (Marquee) */}
+        <div className="flex-1 overflow-hidden relative flex items-center bg-[#006FFF]">
+          {/* Gradient masks for smooth fade on edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-6 sm:w-12 bg-gradient-to-r from-[#006FFF] to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-6 sm:w-12 bg-gradient-to-l from-[#006FFF] to-transparent z-10"></div>
+          
+          <div className="animate-marquee whitespace-nowrap flex items-center text-white font-display font-semibold text-sm sm:text-base lg:text-lg tracking-wider">
+            <span className="mx-6 text-[#FFB800]">⚡</span> BREAKING: AI IS REPLACING 85 MILLION JOBS BY 2025 
+            <span className="mx-6 text-[#FFB800]">⚡</span> DON'T GET LEFT BEHIND - MASTER AI TODAY
+            <span className="mx-6 text-[#FFB800]">⚡</span> LAST FEW SEATS REMAINING FOR THE MASTERCLASS
+            <span className="mx-6 text-[#FFB800]">⚡</span> SECURE YOUR SPOT NOW FOR FREE!
+            {/* Duplicate for seamless looping */}
+            <span className="mx-6 text-[#FFB800]">⚡</span> BREAKING: AI IS REPLACING 85 MILLION JOBS BY 2025 
+            <span className="mx-6 text-[#FFB800]">⚡</span> DON'T GET LEFT BEHIND - MASTER AI TODAY
+            <span className="mx-6 text-[#FFB800]">⚡</span> LAST FEW SEATS REMAINING FOR THE MASTERCLASS
+            <span className="mx-6 text-[#FFB800]">⚡</span> SECURE YOUR SPOT NOW FOR FREE!
+            {/* 3rd duplicate just in case of ultra-wide monitors */}
+            <span className="mx-6 text-[#FFB800]">⚡</span> BREAKING: AI IS REPLACING 85 MILLION JOBS BY 2025 
+            <span className="mx-6 text-[#FFB800]">⚡</span> DON'T GET LEFT BEHIND - MASTER AI TODAY
+            <span className="mx-6 text-[#FFB800]">⚡</span> LAST FEW SEATS REMAINING FOR THE MASTERCLASS
+            <span className="mx-6 text-[#FFB800]">⚡</span> SECURE YOUR SPOT NOW FOR FREE!
           </div>
+        </div>
+      </div>
+
+      {/* Single Page Full Canvas Experience (NO NAV BAR, NO FOOTER) */}
+      <main className="w-full relative z-10 pt-8 sm:pt-12 pb-20 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 max-w-[1920px] mx-auto space-y-12 lg:space-y-20">
+        <div>
 
           {/* ========================================================================= */}
           {/* SECTION 1: IMMERSIVE HERO WITH INTERACTIVE 3D KINETIC AI CORE             */}
@@ -162,7 +189,7 @@ export default function Home() {
             </div>
             
             {/* Right: Registration Form */}
-            <div className="lg:col-span-5 2xl:col-span-6 relative flex justify-center lg:justify-end">
+            <div className="lg:col-span-5 2xl:col-span-6 relative flex justify-center lg:justify-center">
               <div className="w-full max-w-md xl:max-w-lg bg-white border border-slate-200/90 shadow-elevated rounded-3xl overflow-hidden relative">
                 {/* Decorative header accent */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FFB800] to-[#FF5C00]"></div>
@@ -1051,15 +1078,15 @@ export default function Home() {
       </main>
 
       {/* Sticky Footer CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4 bg-white/90 backdrop-blur-md border-t border-slate-200 shadow-[0_-10px_40px_rgba(0,0,0,0.08)]">
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4 bg-[#006FFF]/95 backdrop-blur-md border-t border-[#006FFF] shadow-[0_-10px_40px_rgba(0,111,255,0.25)]">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 px-2 sm:px-6">
           <div className="hidden sm:block flex-1">
-            <p className="text-sm xl:text-base font-bold text-slate-900 leading-tight">AI & The Future Workshop</p>
-            <p className="text-xs text-[#FF5C00] font-bold tracking-wider uppercase mt-0.5">Limited Free Seats Available</p>
+            <p className="text-sm xl:text-base font-bold text-white leading-tight">AI & The Future Workshop</p>
+            <p className="text-xs text-[#FFB800] font-bold tracking-wider uppercase mt-0.5">Limited Free Seats Available</p>
           </div>
           <div className="sm:hidden flex-1">
-            <p className="text-xs font-bold text-slate-900 leading-tight">AI Masterclass</p>
-            <p className="text-[10px] text-[#FF5C00] font-bold uppercase">Free Entry</p>
+            <p className="text-xs font-bold text-white leading-tight">AI Masterclass</p>
+            <p className="text-[10px] text-[#FFB800] font-bold uppercase">Free Entry</p>
           </div>
           <button onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} className="flex-none px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] text-white font-bold text-sm sm:text-base shadow-[0_4px_14px_rgba(255,92,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,92,0,0.4)] hover:-translate-y-0.5 transition-all text-center flex items-center gap-2">
             <span>Register for <span className="line-through text-white/70 mx-1">₹799</span> Free</span>
@@ -1095,37 +1122,40 @@ export default function Home() {
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 sm:p-8 animate-in fade-in zoom-in duration-300">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <div className="relative w-full max-w-md bg-slate-900 border border-slate-700/50 rounded-3xl shadow-[0_0_50px_-12px_rgba(255,92,0,0.3)] p-6 sm:p-8 animate-in fade-in zoom-in duration-300">
+            {/* Top glowing gradient line */}
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FFB800] to-[#FF5C00] rounded-t-3xl"></div>
+            
+            <button onClick={() => setIsModalOpen(false)} className="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-700/50 p-1.5 rounded-full">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <div className="text-center mb-6">
-              <div className="inline-block px-3 py-1 mb-3 rounded-full bg-orange-100 text-[#FF5C00] text-xs font-bold tracking-wider uppercase animate-pulse">Wait! Don't Miss Out</div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Transform Your Skills & Dominate with AI</h2>
-              <p className="text-slate-600 text-sm mt-3">Grab your spot now for <span className="line-through text-slate-400 mx-1">₹799</span> <span className="font-bold text-[#FF5C00]">FREE</span> before seats run out!</p>
+            <div className="text-center mb-6 mt-2">
+              <div className="inline-block px-3 py-1 mb-4 rounded-full bg-[#FF5C00]/10 border border-[#FF5C00]/20 text-[#FFB800] text-xs font-bold tracking-wider uppercase animate-pulse shadow-[0_0_10px_rgba(255,92,0,0.2)]">Wait! Don't Miss Out</div>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-white leading-tight">Transform Your Skills & Dominate with AI</h2>
+              <p className="text-slate-400 text-sm mt-3">Grab your spot now for <span className="line-through text-slate-500 mx-1">₹799</span> <span className="font-bold text-[#FFB800]">FREE</span> before seats run out!</p>
             </div>
             
             <form className="space-y-4" onSubmit={(e) => { handleRegister(e); setIsModalOpen(false); }}>
               <div className="space-y-3">
                 <div>
-                  <label htmlFor="modal-name" className="block text-sm font-semibold text-slate-800 mb-1">Full Name</label>
-                  <input id="modal-name" name="fullName" type="text" required placeholder="Full Name" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm shadow-sm" />
+                  <label htmlFor="modal-name" className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Full Name</label>
+                  <input id="modal-name" name="fullName" type="text" required placeholder="John Doe" className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-800/50 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent transition-all text-sm" />
                 </div>
                 
                 <div>
-                  <label htmlFor="modal-email" className="block text-sm font-semibold text-slate-800 mb-1">Email Address</label>
-                  <input id="modal-email" name="email" type="email" required placeholder="Email Address" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm shadow-sm" />
+                  <label htmlFor="modal-email" className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Email Address</label>
+                  <input id="modal-email" name="email" type="email" required placeholder="john@example.com" className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-800/50 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent transition-all text-sm" />
                 </div>
                 
                 <div>
-                  <label htmlFor="modal-mobile" className="block text-sm font-semibold text-slate-800 mb-1">Mobile Number</label>
-                  <input id="modal-mobile" name="mobile" type="tel" required placeholder="Mobile Number" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm shadow-sm" />
+                  <label htmlFor="modal-mobile" className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Mobile Number</label>
+                  <input id="modal-mobile" name="mobile" type="tel" required placeholder="+91 98765 43210" className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-800/50 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent transition-all text-sm" />
                 </div>
                 
                 <div>
-                  <label htmlFor="modal-profession" className="block text-sm font-semibold text-slate-800 mb-1">Profession</label>
-                  <select id="modal-profession" name="profession" defaultValue="" required className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm shadow-sm">
-                    <option value="" disabled>Select your profession...</option>
+                  <label htmlFor="modal-profession" className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Profession</label>
+                  <select id="modal-profession" name="profession" defaultValue="" required className="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent transition-all text-sm appearance-none">
+                    <option value="" disabled className="text-slate-500">Select your profession...</option>
                     <option value="student">Student</option>
                     <option value="developer">Software Developer</option>
                     <option value="designer">Designer / Creator</option>
@@ -1138,10 +1168,10 @@ export default function Home() {
                 </div>
               </div>
               
-              <button type="submit" disabled={isLoading} className="w-full py-3.5 mt-4 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-semibold text-base shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center gap-2">
-                <span>{isLoading ? 'Registering...' : <><span className="line-through text-white/70 mr-1">₹799</span> Free</>}</span>
+              <button type="submit" disabled={isLoading} className="w-full py-4 mt-6 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-bold text-base shadow-[0_0_20px_rgba(255,92,0,0.4)] transition-all transform hover:-translate-y-1 active:translate-y-0 text-center flex items-center justify-center gap-2 border border-white/20">
+                <span>{isLoading ? 'Registering...' : <><span className="line-through text-white/60 mr-1 font-normal">₹799</span> Claim Free Spot</>}</span>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </button>
             </form>
