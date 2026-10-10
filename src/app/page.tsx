@@ -7,6 +7,7 @@ import { GraduationCap, Briefcase, Zap, Megaphone, Palette, Laptop, Building2, R
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState<{show: boolean, title: string, message: string, type: 'success' | 'error' | ''}>({show: false, title: '', message: '', type: ''});
 
   const showToast = (title: string, message: string, type: 'success' | 'error') => {
@@ -41,6 +42,37 @@ export default function Home() {
       // Show success even on network/timeout errors
       showToast("🎉 Boom! You're In!", "Your spot is secured. Get ready to dominate with AI. Check your inbox for the playbook!", "success");
       form.reset();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleModalRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      fullName: formData.get('fullName'),
+      email: formData.get('email'),
+      mobile: formData.get('mobile')
+    };
+
+    try {
+      await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      showToast("🎉 Boom! You're In!", "Your spot is secured. Get ready to dominate with AI. Check your inbox for the playbook!", "success");
+      form.reset();
+      setIsModalOpen(false);
+    } catch (err) {
+      showToast("🎉 Boom! You're In!", "Your spot is secured. Get ready to dominate with AI. Check your inbox for the playbook!", "success");
+      form.reset();
+      setIsModalOpen(false);
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +162,7 @@ export default function Home() {
               {/* Direct CTAs and Social Proof Strip */}
               <div className="pt-2 space-y-6 xl:space-y-8 xl:pt-4">
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 xl:gap-6">
-                  <button onClick={(e) => { e.preventDefault(); document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' }); }} className="inline-flex items-center justify-center gap-3 px-8 py-4 xl:px-10 xl:py-5 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] text-white font-display font-semibold text-base xl:text-lg shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center">
+                  <button onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} className="inline-flex items-center justify-center gap-3 px-8 py-4 xl:px-10 xl:py-5 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] text-white font-display font-semibold text-base xl:text-lg shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center">
                     <span>Reserve Your Seat / Register</span>
                     <svg className="w-5 h-5 xl:w-6 xl:h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
@@ -231,22 +263,26 @@ export default function Home() {
               
 
             {/* Right: Registration Form */}
-            <div className="lg:col-span-5 2xl:col-span-6 relative flex justify-center lg:justify-center">
-              <div className="w-full max-w-md xl:max-w-lg bg-white border border-slate-200/90 shadow-elevated rounded-3xl relative">
-                {/* Decorative header accent */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FFB800] to-[#FF5C00] z-10 rounded-t-3xl"></div>
+            <div id="register-section" className="lg:col-span-5 2xl:col-span-6 relative flex justify-center lg:justify-center pt-10 sm:pt-0">
+              {/* Form Wrapper (for floating badge) */}
+              <div className="w-full max-w-md xl:max-w-lg relative">
                 
-                {/* Floating Offer Badge */}
-                <div className="absolute -top-6 -left-6 sm:-top-10 sm:-left-10 lg:-top-12 lg:-left-12 w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-br from-[#FF004D] to-[#FF7000] rounded-full flex items-center justify-center text-center shadow-[0_8px_20px_rgba(255,0,77,0.4)] transform -rotate-12 border-[3px] border-white z-20 hover:scale-105 transition-transform duration-300">
+                {/* Floating Offer Badge (Outside overflow-hidden) */}
+                <div className="absolute -top-12 -left-2 sm:-top-10 sm:-left-10 lg:-top-12 lg:-left-12 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-[#FF004D] to-[#FF7000] rounded-full flex items-center justify-center text-center shadow-[0_8px_20px_rgba(255,0,77,0.4)] transform -rotate-12 border-[3px] border-white z-20 hover:scale-105 transition-transform duration-300">
                   <div className="absolute inset-0 border-[1.5px] border-dashed border-white/50 rounded-full m-1.5 animate-[spin_20s_linear_infinite]"></div>
                   <div className="text-white flex flex-col items-center justify-center p-2 relative z-10">
-                    <span className="text-[10px] sm:text-xs font-black leading-tight font-display uppercase tracking-wider text-white drop-shadow-sm">Bonus Worth</span>
-                    <span className="text-xl sm:text-2xl font-black text-yellow-300 drop-shadow-md my-0.5">₹4,999</span>
-                    <span className="text-[9px] sm:text-[10px] font-bold leading-tight opacity-100 uppercase tracking-wide">If You Register<br/>Today!</span>
+                    <span className="text-[9px] sm:text-xs font-black leading-tight font-display uppercase tracking-wider text-white drop-shadow-sm">Bonus Worth</span>
+                    <span className="text-lg sm:text-2xl font-black text-yellow-300 drop-shadow-md my-0.5">₹4,999</span>
+                    <span className="text-[8px] sm:text-[10px] font-bold leading-tight opacity-100 uppercase tracking-wide">If You Register<br/>Today!</span>
                   </div>
                 </div>
-                
-                <div className="p-8 sm:p-10 xl:p-12 space-y-8">
+
+                {/* Actual Form Window */}
+                <div className="relative w-full bg-white rounded-3xl shadow-elevated overflow-hidden border border-slate-200/90 z-10">
+                  {/* Decorative header accent */}
+                  <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FFB800] to-[#FF5C00] z-10"></div>
+                  
+                  <div className="p-8 sm:p-10 xl:p-12 space-y-8 relative z-10">
                   <div className="space-y-3 text-center">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-mono font-bold tracking-wider uppercase">
                       <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
@@ -292,16 +328,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </section>
         </div>
 
 
 
-{/* ========================================================================= */}
+        {/* ========================================================================= */}
         {/* SECTION 2: WHAT IS THIS WORKSHOP ABOUT?                                  */}
         {/* ========================================================================= */}
-        <section className="space-y-6 xl:space-y-8">
+        <section id="syllabus-section" className="space-y-6 xl:space-y-8">
 
           <div className="relative rounded-3xl bg-gradient-to-br from-white via-amber-50/20 to-orange-50/30 border-2 border-amber-200/70 p-6 lg:p-8 xl:p-10 shadow-elevated overflow-hidden text-center mb-8 xl:mb-12">
             {/* Subtle Accent Ring */}
@@ -371,7 +408,7 @@ export default function Home() {
                   
                   <div className="pt-1">
                     <button 
-                      onClick={(e) => { e.preventDefault(); document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                      onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }}
                       className="w-full group relative inline-flex items-center justify-center px-6 py-4 lg:py-5 font-sans font-bold text-white text-base lg:text-lg transition-all duration-300 ease-out bg-gradient-to-r from-[#FFB800] to-[#FF5C00] rounded-2xl hover:shadow-[0_0_20px_rgba(255,184,0,0.4)] hover:-translate-y-1 overflow-hidden"
                     >
                       <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
@@ -415,7 +452,7 @@ export default function Home() {
               
               <div className="pt-2 xl:pt-4">
                 <button 
-                  onClick={(e) => { e.preventDefault(); document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }}
                   className="group relative inline-flex items-center justify-center px-6 sm:px-8 xl:px-10 py-3 sm:py-3.5 xl:py-4 font-sans font-bold text-white text-sm sm:text-base xl:text-lg transition-all duration-300 ease-out bg-gradient-to-r from-[#FFB800] to-[#FF5C00] rounded-full hover:shadow-[0_0_20px_rgba(255,184,0,0.4)] hover:-translate-y-1 overflow-hidden"
                 >
                   <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
@@ -444,7 +481,7 @@ export default function Home() {
             <p className="text-xs font-bold text-white leading-tight">AI Masterclass</p>
             <p className="text-[10px] text-[#FFB800] font-bold uppercase">Free Entry</p>
           </div>
-          <button onClick={(e) => { e.preventDefault(); document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' }); }} className="flex-none px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] text-white font-bold text-sm sm:text-base shadow-[0_4px_14px_rgba(255,92,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,92,0,0.4)] hover:-translate-y-0.5 transition-all text-center flex items-center gap-2">
+          <button onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} className="flex-none px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] text-white font-bold text-sm sm:text-base shadow-[0_4px_14px_rgba(255,92,0,0.3)] hover:shadow-[0_6px_20px_rgba(255,92,0,0.4)] hover:-translate-y-0.5 transition-all text-center flex items-center gap-2">
             <span>Register for <span className="line-through text-white/70 mx-1">₹799</span> Free</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -453,28 +490,122 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Custom Toast Notification */}
-      <div 
-        className={`fixed top-6 right-6 z-[100] max-w-sm w-full p-4 rounded-2xl shadow-2xl transition-all duration-500 transform flex items-start gap-3 ${
-          toast.show ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
-        } ${toast.type === 'success' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}`}
-      >
-        <div className={`mt-0.5 flex-shrink-0 ${toast.type === 'success' ? 'text-emerald-500' : 'text-red-500'}`}>
-          {toast.type === 'success' ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          )}
+      {/* Success/Error Modal (formerly Toast) */}
+      <div className={`fixed inset-0 z-[300] flex items-center justify-center p-4 transition-all duration-500 ${toast.show ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onClick={() => setToast(prev => ({...prev, show: false}))}></div>
+        
+        {/* Modal Content */}
+        <div className={`relative w-full max-w-md p-8 sm:p-10 rounded-3xl shadow-2xl transform transition-all duration-500 flex flex-col items-center text-center gap-5 ${
+          toast.show ? 'scale-100 translate-y-0' : 'scale-95 translate-y-8'
+        } ${toast.type === 'success' ? 'bg-emerald-50 border-2 border-emerald-200' : 'bg-red-50 border-2 border-red-200'}`}>
+          
+          {/* Icon */}
+          <div className={`p-4 rounded-full ${toast.type === 'success' ? 'bg-emerald-100 text-emerald-500' : 'bg-red-100 text-red-500'}`}>
+            {toast.type === 'success' ? (
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            ) : (
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            )}
+          </div>
+          
+          <div className="space-y-2">
+            <h3 className={`text-2xl sm:text-3xl font-display font-bold ${toast.type === 'success' ? 'text-emerald-800' : 'text-red-800'}`}>{toast.title}</h3>
+            <p className={`text-base sm:text-lg ${toast.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>{toast.message}</p>
+          </div>
+          
+          <button onClick={() => setToast(prev => ({...prev, show: false}))} className={`mt-2 px-8 py-3.5 rounded-xl font-bold text-lg transition-colors w-full ${
+            toast.type === 'success' 
+              ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30' 
+              : 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30'
+          }`}>
+            Awesome!
+          </button>
         </div>
-        <div className="flex-1 pt-0.5">
-          <h3 className={`text-sm font-bold ${toast.type === 'success' ? 'text-emerald-800' : 'text-red-800'}`}>{toast.title}</h3>
-          <p className={`mt-1 text-sm ${toast.type === 'success' ? 'text-emerald-600' : 'text-red-600'}`}>{toast.message}</p>
-        </div>
-        <button onClick={() => setToast(prev => ({...prev, show: false}))} className={`flex-shrink-0 ml-4 rounded-lg p-1 transition-colors ${toast.type === 'success' ? 'hover:bg-emerald-100 text-emerald-500' : 'hover:bg-red-100 text-red-500'}`}>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
       </div>
 
+      {/* Registration Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+          
+          {/* Modal Content Wrapper */}
+          <div className="relative w-full max-w-md xl:max-w-lg mt-8 sm:mt-0">
+            {/* Floating Offer Badge (Outside overflow-hidden) */}
+            <div className="absolute -top-12 -left-2 sm:-top-10 sm:-left-10 lg:-top-12 lg:-left-12 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-[#FF004D] to-[#FF7000] rounded-full flex items-center justify-center text-center shadow-[0_8px_20px_rgba(255,0,77,0.4)] transform -rotate-12 border-[3px] border-white z-20 hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 border-[1.5px] border-dashed border-white/50 rounded-full m-1.5 animate-[spin_20s_linear_infinite]"></div>
+              <div className="text-white flex flex-col items-center justify-center p-2 relative z-10">
+                <span className="text-[9px] sm:text-xs font-black leading-tight font-display uppercase tracking-wider text-white drop-shadow-sm">Bonus Worth</span>
+                <span className="text-lg sm:text-2xl font-black text-yellow-300 drop-shadow-md my-0.5">₹4,999</span>
+                <span className="text-[8px] sm:text-[10px] font-bold leading-tight opacity-100 uppercase tracking-wide">If You Register<br/>Today!</span>
+              </div>
+            </div>
+
+            {/* Actual Modal Window */}
+            <div className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/90 z-10">
+              {/* Close Button */}
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-4 right-4 z-[100] w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+              
+              {/* Decorative header */}
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FFB800] to-[#FF5C00] z-10"></div>
+            
+            <div className="p-8 sm:p-10 xl:p-12 space-y-8 relative z-10">
+              <div className="space-y-3 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-mono font-bold tracking-wider uppercase">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                  Hurry Up! Only a few seats left
+                </div>
+                <h3 className="font-display text-2xl xl:text-3xl font-bold text-slate-900">
+                  Reserve Your Free Seat
+                </h3>
+                <p className="text-slate-600 text-sm xl:text-base">
+                  Join the exclusive masterclass and unlock your AI career playbook.
+                </p>
+              </div>
+
+              <form className="space-y-5" onSubmit={handleModalRegister}>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="modal-name" className="block text-sm font-semibold text-slate-800 mb-1.5">Full Name</label>
+                    <input id="modal-name" name="fullName" type="text" required placeholder="Full Name" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm xl:text-base shadow-sm" />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="modal-email" className="block text-sm font-semibold text-slate-800 mb-1.5">Email Address</label>
+                    <input id="modal-email" name="email" type="email" required placeholder="Email Address" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm xl:text-base shadow-sm" />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="modal-mobile" className="block text-sm font-semibold text-slate-800 mb-1.5">Mobile Number</label>
+                    <input id="modal-mobile" name="mobile" type="tel" required placeholder="Mobile Number" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF5C00] focus:border-transparent focus:bg-white transition-all text-sm xl:text-base shadow-sm" />
+                  </div>
+                </div>
+                
+                <div className="flex flex-col items-center gap-3 mt-4">
+                  <button type="submit" disabled={isLoading} className="w-full py-4 rounded-xl bg-gradient-to-r from-[#FFB800] to-[#FF5C00] hover:from-[#FFC933] hover:to-[#FF7022] disabled:opacity-70 text-white font-display font-bold text-lg md:text-xl shadow-glow-orange transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center flex items-center justify-center">
+                    {isLoading ? 'Registering...' : 'Grab Your Free Seat Now'}
+                  </button>
+                  <div className="text-sm md:text-base font-semibold text-blue-500 flex items-center justify-center gap-1.5 mt-1">
+                    <span className="text-lg">🔥</span> Unlock Bonuses Worth ₹4,999 <span className="text-lg">👆🏻</span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+        </div>
+      )}
 
     </>
   );
